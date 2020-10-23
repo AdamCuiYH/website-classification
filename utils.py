@@ -229,7 +229,7 @@ def _init():
     prefs = {"profile.managed_default_content_settings.images": 2,'profile.default_content_setting_values': { 'display="none"': 2, }}
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    browser = webdriver.Chrome(r'F:/项目模型代码\/爬虫结果和bert分类/chromedriver.exe',options=chrome_options)
+    browser = webdriver.Chrome(r'F:/项目模型代码/爬虫结果和bert分类/chromedriver.exe',options=chrome_options)
     return browser
 def chrome_spyder_01(url, timeout, for_soup=False):
     browser = _init()
@@ -256,7 +256,7 @@ def chrome_spyder_01(url, timeout, for_soup=False):
         browser.switch_to.window(browser.window_handles[1])
     cur_url = browser.current_url
     cur_url = re.sub('/$', '', cur_url)
-    print(cur_url)
+    #print(cur_url)
     page_text=browser.page_source
     soup = BeautifulSoup(page_text, "html5lib")
     soup.prettify()
@@ -273,26 +273,15 @@ def chrome_spyder_01(url, timeout, for_soup=False):
         html_content = get_data(page_text)
         return [True, url, html_content, title_content, page_text,"selenium爬虫/跳转到：{}".format(cur_url)]
 def chrome_spyder(url):
-    with open('爬虫文本.csv', 'a', encoding='utf-8') as f1:
+    with open('爬虫文本.csv', 'a+', encoding='utf-8') as f1:
         writer = csv.writer(f1)
         if "http"  in url or "https"  in url:
-            results = chrome_spider_son(url,10,30)
+            results = chrome_spyder_01(url,10,30)
             if results:
                 writer.writerow(results)
         else:
             url = "http://" + url
-            results = chrome_spider_son(url, 10, 30)
+            results = chrome_spyder_01(url, 10, 30)
             if results:
                 writer.writerow(results)
-    '''
-    f = open('爬虫文本.csv', 'a+', encoding='utf-8')
-    writer = csv.writer(f)
-    if "http"  in url or "https"  in url:
-        writer.writerow(chrome_spider_son(url,10,30))
-    else:
-        url = "http://" + url
-        writer.writerow(chrome_spider_son(url,10,30))
-#chrome_spyder("http://m.fczg888.com")
-    '''
-
 
